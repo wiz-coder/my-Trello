@@ -1,0 +1,21 @@
+.grid_container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+  
+
+}
+
+.grid_container__nav{
+    display: block;
+    width:100%;
+    height: 20vh;
+}
+
+.grid_container__body{
+    
+    height:100%;
+    
+    
+}
