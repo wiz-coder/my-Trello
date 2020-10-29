@@ -14,8 +14,10 @@ export const verifyUserCookie = (req,res,next) => {
 
 export const isUser = async (req,res,next) => {
     try{
-        const specificUser = await User.findOne({email:req.email})
+        const specificUser = await User.findOne({email:req.email}).populate('projects')
         if(!specificUser) return res.json({success:false,error:'[Tampered Cookie]: Invalid User'})
+        req.userID = specificUser._id
+        req.user = specificUser
         next()
     }catch(err){
         res.json({success:false,error:err.message})

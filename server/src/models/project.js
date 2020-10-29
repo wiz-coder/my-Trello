@@ -5,24 +5,20 @@ const Project = new mongoose.Schema({
     title:{
         type:String,
         required:true,
-        unique: true
     },
     tasks:[{
        type:mongoose.Schema.Types.ObjectId,
        ref:"Task"
     }],
     owner:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        type:String
     },
-    editors:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-    }],
-    viewers:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-    }]
+    editors:[String],
+    viewers:[String],
+    stages:{
+        type:[String],
+        default:['TODO','IN-PROGRESS','COMPLETED','TESTED','UNDER-REVIEW','MERGED','REDO']
+    }
 })
 
 const ProjectModel = mongoose.model("Project",Project)

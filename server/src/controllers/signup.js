@@ -8,7 +8,8 @@ export const createUser = async (req,res,next) => {
             firstname:req.userData.firstname,
             lastname:req.userData.lastname,
             email:req.userData.email,
-            password:encrptedPassword
+            password:encrptedPassword,
+            projects:[]
         })
         const savedUser = await newUser.save()
         res.json({success:true,message:"User created successfully"})
