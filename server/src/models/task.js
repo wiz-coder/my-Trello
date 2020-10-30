@@ -7,8 +7,7 @@ const Task = new mongoose.Schema({
         minlength:2
     },
     author:{ 
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+        type:String,
         required:true
     },
     createdAt:{
@@ -20,6 +19,10 @@ const Task = new mongoose.Schema({
         required:true,
         enum:['TODO','IN-PROGRESS','COMPLETED','TESTED','UNDER-REVIEW','MERGED','REDO'],
         default: "TODO"
+    },
+    lastModified:{
+        type:String,
+        required:true
     }
 
 })

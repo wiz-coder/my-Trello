@@ -18,8 +18,17 @@ export const createProject = async (req,res,next) => {
                projects:savedProject._id
            }
         })
-        const resUser = await (await User.findOne({email:updatedUser.email}).populate('projects')).execPopulate()
-        res.json({success:false,message:"Project created successfully",data:resUser})
+        const resUser = await User.findOne({email:req.email}).populate([
+            {
+                path: "projects",
+                model: "Project",
+                populate: {
+                    path: "tasks",
+                    model:"Task"
+                }
+            }
+        ])
+        res.json({success:true,message:"Project created successfully",data:resUser})
     }catch(err){
         res.json({success:false,error:err.message})
     }
@@ -29,7 +38,7 @@ export const addEditorOrViewer = async (req,res,next) => {
    try{
        switch(req.body.role){
            case "editor":
-               const updatedProject = await Project.updateOne({_id:req.body.projectID},{
+               let updatedProject = await Project.updateOne({_id:req.body.projectID},{
                    $push:{
                        editors:req.body.email,
                        viewers:req.body.email
@@ -40,10 +49,19 @@ export const addEditorOrViewer = async (req,res,next) => {
                        projects:updatedProject._id
                    }
                })
-               const updatedUser = await User.findOne({email:req.email}).populate('projects').execPopulate()
-               return req.json({success:true,message:'Added '+req.body.email+' as editor',data:updatedUser})
+               let updatedUser =  await User.findOne({email:req.email}).populate([
+                {
+                    path: "projects",
+                    model: "Project",
+                    populate: {
+                        path: "tasks",
+                        model:"Task"
+                    }
+                }
+            ])
+                return req.json({success:true,message:'Added '+req.body.email+' as editor',data:updatedUser})
             case "viewer":
-               const updatedProject = await Project.updateOne({_id:req.body.projectID},{
+               updatedProject = await Project.updateOne({_id:req.body.projectID},{
                    $push:{
                        viewers:req.body.email
                    }
@@ -53,7 +71,16 @@ export const addEditorOrViewer = async (req,res,next) => {
                     projects:updatedProject._id
                 }
             })
-               const updatedUser = await (await User.findOne({email:req.email}).populate('projects')).execPopulate()
+               updatedUser = await User.findOne({email:req.email}).populate([
+                {
+                    path: "projects",
+                    model: "Project",
+                    populate: {
+                        path: "tasks",
+                        model:"Task"
+                    }
+                }
+            ])
                return res.json({success:true,message:'Added '+req.body.email+' as viewer',data:updatedUser})
        }
    }catch(err){
@@ -65,7 +92,7 @@ export const removeEditorOrViewer = async (req,res,next) => {
     try{
         switch(req.body.role){
             case "editor":
-                const updatedProject = await Project.updateOne({_id:req.body.projectID},{
+                let updatedProject = await Project.updateOne({_id:req.body.projectID},{
                     $pull:{
                         editors:req.body.email,
                         viewers:req.body.email
@@ -76,10 +103,19 @@ export const removeEditorOrViewer = async (req,res,next) => {
                         projects:updatedProject._id
                     }
                 })
-                const updatedUser = await User.findOne({email:req.email}).populate('projects').execPopulate()
+                let updatedUser = await User.findOne({email:req.email}).populate([
+                    {
+                        path: "projects",
+                        model: "Project",
+                        populate: {
+                            path: "tasks",
+                            model:"Task"
+                        }
+                    }
+                ])
                 return req.json({success:true,message:'Added '+req.body.email+' as editor',data:updatedUser})
              case "viewer":
-                const updatedProject = await Project.updateOne({_id:req.body.projectID},{
+                updatedProject = await Project.updateOne({_id:req.body.projectID},{
                     $pull:{
                         viewers:req.body.email
                     }
@@ -89,7 +125,16 @@ export const removeEditorOrViewer = async (req,res,next) => {
                         projects:updatedProject._id
                     }
                 })
-                const updatedUser = await (await User.findOne({email:req.email}).populate('projects')).execPopulate()
+                updatedUser = await User.findOne({email:req.email}).populate([
+                    {
+                        path: "projects",
+                        model: "Project",
+                        populate: {
+                            path: "tasks",
+                            model:"Task"
+                        }
+                    }
+                ])
                 return res.json({success:true,message:'Added '+req.body.email+' as viewer',data:updatedUser})
         }
     }catch(err){
@@ -100,7 +145,16 @@ export const removeEditorOrViewer = async (req,res,next) => {
  export const removeProject = async (req,res,next) => {
      try{
          const deletedProject = await Project.deleteOne({_id:req.body.ID})
-         const resUser = await (await User.findOne({email:req.email}).populate('projects')).execPopulate()
+         const resUser = await User.findOne({email:req.email}).populate([
+            {
+                path: "projects",
+                model: "Project",
+                populate: {
+                    path: "tasks",
+                    model:"Task"
+                }
+            }
+        ])
          res.json({success:true,message:"Project succeffully deleted",data:resUser})
      }catch(err){
          res.json({success:false,error:err.message})

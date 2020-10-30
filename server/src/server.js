@@ -34,12 +34,9 @@ app.use(express.json())
 
 // redirecting to the specific routes
 app.use('/app/v1/home',homeRoute)
-app.use('app/v1/user',userRoute)
+app.use('/app/v1/user',userRoute)
 
-app.use('/',(req,res,next)=>{ 
-    res.send('welcome')
-    res.cookie('abc','def',{h})
-})
+
 
 
 const port = process.env.PORT || 5000

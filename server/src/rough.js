@@ -1,4 +1,5 @@
 // const Crypto = require('crypto')
+const moment = require("moment")
 
 // function randomString(size = 50) {  
 //     return Crypto
@@ -11,4 +12,4 @@
 //     randomString()
 //   )
 
-console.log(typeof Date.now())
+console.log(moment().format('llll'))

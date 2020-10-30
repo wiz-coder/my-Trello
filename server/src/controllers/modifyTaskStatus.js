@@ -1,11 +1,11 @@
+import Task from "../models/task"
 import User from "../models/user"
 
-export const updatePhoto = async (req,res,next) => {
+export const modifyTaskStatus = async (req,res,next) => {
     try{
-        const updatedUser = await User.updateOne({email:req.email},{
+        const updatedTask = await Task.updateOne({_id:req.body.taskID},{
             $set:{
-                imageURL:req.resImage.secure_url,
-                imageID: req.resImage.public_id
+                status:req.body.status
             }
         })
         const resUser = await User.findOne({email:req.email}).populate([
@@ -18,8 +18,7 @@ export const updatePhoto = async (req,res,next) => {
                 }
             }
         ])
-        console.log(resUser)
-        res.json({success:true,message:'Image updated successfully',data:resUser})
+        res.json({success:true,message:"Task status has been changed successfully",data:resUser})
     }catch(err){
         res.json({success:false,error:err.message})
     }

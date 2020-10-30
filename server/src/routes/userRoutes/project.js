@@ -7,22 +7,22 @@ import {createProject,addEditorOrViewer,removeEditorOrViewer,removeProject} from
 import editorOrViewerValidation from "../../validations/updateProjectEditorOrViewer"
 import {userExists,isModifierOwner,editorOrViewerExists,editorOrViewerNotExists} from "../../middlewares/editorOrViewerExists"
 import {isProjectExists,removeProjectFromUsers} from "../../middlewares/removeProject"
+import taskRoute from "./task"
 const router = Router()
 
 //creation of project
-router.patch('/',verifyUserCookie,isUser,projectTitleValidation,isTitleUnique,createProject)
+router.patch('/createProject',verifyUserCookie,isUser,projectTitleValidation,isTitleUnique,createProject)
 
 //update the project eg: adding editors, viewers,
-router.patch('/',verifyUserCookie,isUser,editorOrViewerValidation,userExists,isModifierOwner,editorOrViewerExists,addEditorOrViewer)
+router.patch('/addEditorOrViewer',verifyUserCookie,isUser,editorOrViewerValidation,userExists,isModifierOwner,editorOrViewerExists,addEditorOrViewer)
 
 //update the project eg: removing editors, viewers
-router.patch('/',verifyUserCookie,isUser,editorOrViewerValidation,userExists,isModifierOwner,editorOrViewerNotExists,removeEditorOrViewer)
-
-//modifying the tasks i.e under-review,merged,redo
-router.patch('/')
+router.patch('/removeEditorOrViewer',verifyUserCookie,isUser,editorOrViewerValidation,userExists,isModifierOwner,editorOrViewerNotExists,removeEditorOrViewer)
 
 //deleting the entire project
-router.patch('/',verifyUserCookie,isUser,projectIDValidation,isProjectExists,removeProjectFromUsers,removeProject)
+router.patch('/deleteProject',verifyUserCookie,isUser,projectIDValidation,isProjectExists,removeProjectFromUsers,removeProject)
 
+//creating, modifying and deleting tasks
+router.use('/task',taskRoute)
 
 export default router
