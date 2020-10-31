@@ -7,7 +7,7 @@ export const verifyUser = (req,res,next)=>{
     to: `${req.body.email}`, // Change to your recipient
     from: 'uppalapraveen0707@gmail.com', // Change to your verified sender
     subject: 'Verifying the User',
-    text: `http://localhost:3000/verifyUser?user=${req.token}`,
+    text: `http://localhost:5000/app/v1/home/verifyUser?user=${req.token}`,
     html: `<a href='http://localhost:3000/verifyUser?user=${req.token}' target="_blank">Click on the link to verify your account</a>`,
   }
   sgMail
@@ -27,8 +27,8 @@ export const resetPassword = (req,res,next) => {
     to: `${req.body.email}`, // Change to your recipient
     from: 'uppalapraveen0707@gmail.com', // Change to your verified sender
     subject: 'reset your password',
-    text: `http://localhost:3000/resetPassword?user=${req.token}`,
-    html: `<a href='http://localhost:3000/resetPassword?user=${req.token}' target="_blank">Click on the link to reset your password</a>`,
+    text: `http://localhost:5000/app/v1/home/resetPassword?user=${req.token}`,
+    html: `<a href='http://localhost:5000/app/v1/home/resetPassword?user=${req.token}' target="_blank">Click on the link to reset your password</a>`,
   }
   sgMail
     .send(msg)

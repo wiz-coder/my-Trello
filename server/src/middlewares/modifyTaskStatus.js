@@ -20,8 +20,9 @@ export const isUserAuthorisedToModify = (req,res,next) => {
 
 export const doesTaskExist = (req,res,next) => {
     try{
-        const specificTask = req.project[0].tasks.filter(task=>task == req.body.taskID)
+        const specificTask = req.project.tasks.filter(task=>task._id == req.body.taskID)
         if(specificTask.length < 1) return res.json({success:false,error:"Task doesn't exist"})
+        req.task = specificTask[0]
         next()
     }catch(err){
         res.json({success:false,error:err.message})

@@ -6,7 +6,7 @@ export const doesProjectExists = (req,res,next) => {
             if(project._id == req.body.ID) return project})
         console.log(specificProject)
         if(specificProject.length < 1) return res.json({success:false,error:"Project doesn't exist or editor is not part of the project team"})
-        req.project = specificProject
+        req.project = specificProject[0]
         next()
     }catch(err){
         res.json({success:false,error:err.message})
@@ -16,7 +16,7 @@ export const doesProjectExists = (req,res,next) => {
 export const isUserEditor = (req,res,next) => {
     try{
         console.log(req.project)
-        const isEditor = req.project[0].editors.filter(editor=>editor == req.user.email)
+        const isEditor = req.project.editors.filter(editor=>editor == req.user.email)
         if(isEditor.length < 1) return res.json({success:false,error:"User is not authorised to perform this operation"})
         next()
     }catch(err){
